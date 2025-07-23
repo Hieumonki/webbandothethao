@@ -1,0 +1,31 @@
+<div class="auth-container">
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+    <h2>Đăng ký</h2>
+    <hr />
+
+    <!-- Họ và Tên nằm ngang -->
+    <div class="form-group-name">
+      <div class="form-field">
+        <label>Họ:</label>
+        <input name="lastName" [(ngModel)]="user.lastName" required placeholder="Họ" />
+      </div>
+      <div class="form-field">
+        <label>Tên:</label>
+        <input name="firstName" [(ngModel)]="user.firstName" required placeholder="Tên" />
+      </div>
+    </div>
+
+    <label>Email:</label>
+    <input name="email" [(ngModel)]="user.email" required placeholder="Email" />
+
+    <label>Mật khẩu:</label>
+    <input type="password" name="password" [(ngModel)]="user.password" required placeholder="Mật khẩu" />
+
+    <label>Nhập lại mật khẩu:</label>
+    <input type="password" name="confirmPassword" [(ngModel)]="user.confirmPassword" required placeholder="Nhập lại mật khẩu" />
+
+    <button type="submit">Đăng ký</button>
+
+    <p class="link">Bạn đã có tài khoản? <a routerLink="/login">Đăng nhập</a></p>
+  </form>
+</div>

@@ -1,0 +1,81 @@
+<main class="product-detail-page">
+  <div class="product-detail-container">
+    <!-- GALLERY -->
+    <div class="product-gallery">
+      <div class="thumbnails">
+        <img [src]="product.imagerv" alt="Ảnh phụ 1" />
+        <img [src]="product.imagervv" alt="Ảnh phụ 2" />
+        <img [src]="product.imagervvv" alt="Ảnh phụ 3" />
+        <img [src]="product.imagervvvv" alt="Ảnh phụ 4" />
+      </div>
+      <div class="main-image">
+        <img [src]="product.image" alt="Ảnh chính" />
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="sku">Mã SP: 1</p>
+      <p class="price">
+        {{ product.price ? (product.price | currency:'VND':'symbol') : 'Liên hệ' }}
+      </p>
+
+      <!-- MÀU SẮC -->
+      <label>Màu sắc:</label>
+      <div class="color-options">
+        <button
+          *ngFor="let color of colors"
+          class="color-btn"
+          [class.active]="selectedColor === color"
+          (click)="selectColor(color)">
+          {{ color }}
+        </button>
+      </div>
+
+      <!-- SIZE -->
+      <label>Kích thước:</label>
+      <div class="sizes">
+        <button *ngFor="let size of sizes" [class.active]="selectedSize === size" (click)="selectSize(size)">
+          {{ size }}
+        </button>
+      </div>
+
+      <label>Số lượng:</label>
+      <input type="number" [(ngModel)]="quantity" min="1" />
+
+      <div class="buttons">
+        <button class="add-to-cart" (click)="addToCart(product)">Thêm vào giỏ</button>
+        <button class="buy-now" (click)="muaNgay(product)">Mua ngay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÔ TẢ -->
+  <div class="product-description">
+    <h2>Mô tả sản phẩm</h2>
+    <p>{{ product.describe }}</p>
+  </div>
+
+  <!-- GỢI Ý -->
+  <div class="related-products">
+    <h2 class="related-title">Có thể bạn cũng thích</h2>
+    <div class="product-grid">
+      <div class="product-card" *ngFor="let item of relatedProducts">
+        <ng-container *ngIf="item._id !== product._id">
+          <img [src]="item.image" alt="{{ item.name }}" class="product-img" />
+          <h4 class="product-name">{{ item.name }}</h4>
+          <p class="product-price">
+            {{ item.price ? (item.price | currency:'VND':'symbol') : 'Liên hệ' }}
+          </p>
+          <div class="product-actions">
+            <button (click)="addToCart(item)" class="btn-add">🛒</button>
+            <a [routerLink]="['/product-detail', item._id]">
+              <button class="btn-view">Xem</button>
+            </a>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</main>

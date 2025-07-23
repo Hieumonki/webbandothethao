@@ -1,0 +1,44 @@
+<main class="main-content">
+
+<section class="filter-bar">
+  <h3>Lọc sản phẩm</h3>
+  <div class="filter-controls">
+    <select [(ngModel)]="selectedCategory" (change)="filterProducts()">
+      <option value="">-- Tất cả danh mục --</option>
+      <option *ngFor="let category of categories" [value]="category._id">{{ category.name }}</option>
+    </select>
+
+    <select [(ngModel)]="selectedPrice" (change)="filterProducts()">
+      <option value="">-- Mức giá --</option>
+      <option value="0-50000">Dưới 50.000đ</option>
+      <option value="50000-200000">50.000đ - 200.000đ</option>
+      <option value="200000-1000000">200.000đ - 1.000.000đ</option>
+      <option value="1000000-999999999">Trên 1.000.000đ</option>
+    </select>
+  </div>
+</section>
+
+  <!-- Bọc grid container ở đây -->
+  <section class="product-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <img src="{{product.image}}" alt="Sản phẩm" class="product-image" />
+
+      <div class="product-info">
+        <p class="product-subcategory">{{product.name}}</p>
+
+        <div class="product-price-box">
+          <span class="price-new">{{product.price  | number: '1.0'}} VNĐ</span>
+          <span class="price-old">$4.99</span>
+        </div>
+
+        <div class="product-actions">
+          <button class="action-btn">add wishlist</button>
+          <button class="action-btn">add to compare</button>
+          <button [routerLink]="['/product-detail/'+ product._id]" routerLinkActive="router-link-active"  class="action-btn outline">quick view</button>
+        </div>
+      </div>
+
+      <button (click)="addToCart(product)" class="add-to-cart">Mua ngay</button>
+    </div>
+  </section>
+</main>

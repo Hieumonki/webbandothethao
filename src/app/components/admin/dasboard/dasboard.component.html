@@ -1,0 +1,27 @@
+<div class="account-container">
+  <div class="account-sidebar">
+    <div class="user-avatar">
+      <img src="https://i.pravatar.cc/100" alt="User Avatar">
+      <h4>hieumonki4</h4>
+    </div>
+    <ul class="account-menu">
+      <li [routerLink]="['/admin']" routerLinkActive="router-link-active"  class="active">Trang tài khoản</li>
+      <li>Đơn hàng</li>
+      <li [routerLink]="['/admin/category-list']" routerLinkActive="router-link-active" >Sản Phẩm</li>
+      <li>Danh Mục</li>
+      <li>Tài khoản</li>
+      <li>Đăng xuất</li>
+      <li>Wishlist</li>
+    </ul>
+  </div>
+<router-outlet/>
+  <div class="account-content">
+    <p>Xin chào <strong>hieumonki4</strong> (không phải tài khoản <strong>hieumonki4</strong>? <a href="#">Hãy thoát ra</a>)</p>
+    <p>
+      Từ trang quản lý tài khoản bạn có thể xem <strong>đơn hàng mới</strong>,
+      quản lý <strong>địa chỉ giao hàng</strong> và <strong>thanh toán</strong>,
+      và <strong>sửa mật khẩu và thông tin tài khoản</strong>.
+    </p>
+
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<section class="cart">
+  <div class="container">
+    <h1>Giỏ hàng của bạn</h1>
+
+    <table class="cart-table" *ngIf="cartItems.length > 0; else emptyCart">
+      <thead>
+        <tr>
+          <th>Sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Tạm tính</th>
+          <th>Xoá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td class="product-info">
+            <img [src]="item.product.image" [alt]="item.product.name" />
+            <div>
+              <span><strong>{{ item.product.name }}</strong></span><br />
+              <small>Size: {{ item.selectedSize }}</small><br />
+              <small>Màu: {{ item.selectedColor }}</small>
+            </div>
+          </td>
+          <td>{{ item.product.price | number }}₫</td>
+          <td>
+            <button (click)="decrease(item.product._id)">-</button>
+            {{ item.quantity }}
+            <button (click)="increase(item.product)">+</button>
+          </td>
+          <td>{{ item.product.price * item.quantity | number }}₫</td>
+          <td>
+            <button class="remove-btn" (click)="removeAll(item.product._id)">X</button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <ng-template #emptyCart>
+      <p>🛒 Giỏ hàng của bạn đang trống.</p>
+    </ng-template>
+
+    <div class="cart-total" *ngIf="cartItems.length > 0">
+      <p><strong>Tổng cộng: </strong>{{ getTotal() | number:'1.0' }} VNĐ</p>
+      <button class="checkout-btn" (click)="checkout()">Tiến hành thanh toán</button>
+    </div>
+  </div>
+</section>

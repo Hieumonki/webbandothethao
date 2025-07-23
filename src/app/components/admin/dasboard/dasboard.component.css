@@ -1,0 +1,67 @@
+.account-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  gap: 30px;
+}
+
+.account-sidebar {
+  width: 280px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background: #fff;
+}
+
+.user-avatar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-avatar img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-avatar h4 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.account-menu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.account-menu li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.account-menu li:hover {
+  color: #ffa500;
+}
+
+.account-menu .active {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.account-content {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+.account-content p {
+  margin-bottom: 16px;
+  font-size: 15px;
+  line-height: 1.6;
+}
