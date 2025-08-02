@@ -105,10 +105,10 @@
               <div>{{ order.orderId }}</div>
             </td>
             <td>
-              <div>{{ order.productId?.name || 'N/A' }}</div>
+              <div>{{ order.productId.name || 'N/A' }}</div>
             </td>
             <td>
-              <div>{{ order.userId?.name || 'N/A' }}, Việt Nam</div>
+              <div>{{ order.userId.name || 'N/A' }}, Việt Nam</div>
             </td>
             <td>
               <div>{{ order.createdAt | date:'shortDate' }}</div>
