@@ -1,0 +1,101 @@
+<header>
+  <div id="top-header">
+    <div class="container">
+      <ul class="header-links pull-left">
+        <li><a href="#"><i class="fa fa-phone"></i> +84344610973</a></li>
+        <li><a href="#"><i class="fa fa-envelope-o"></i> SHOP THỂ THAO</a></li>
+        <li><a href="#"><i class="fa fa-map-marker"></i> Thành Phố Hồ Chí Minh</a></li>
+      </ul>
+      <ul class="header-links pull-right">
+        <li class="account-dropdown">
+          <a href="" style="margin-top: 4px; margin-right: 15px;"><i class="fa fa-dollar"></i> USD</a>
+          <i class="fa-solid fa-user"></i>
+          <select (change)="onAccountAction($event)">
+            <option disabled selected *ngIf="isLogin">Xin chào {{ isLogin.fullname }}</option>
+            <option disabled selected *ngIf="!isLogin">Tài khoản của bạn</option>
+            <option *ngIf="isADM" value="/admin/dashboard">Trang Quản Trị</option>
+            <option *ngIf="!isLogin" value="/login">Đăng nhập</option>
+            <option *ngIf="!isLogin" value="/register">Đăng ký</option>
+            <option *ngIf="isLogin" value="logout">Đăng xuất</option>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="header">
+    <div class="container">
+      <div class="row">
+        <!-- Logo -->
+        <div class="col-md-3">
+          <div class="header-logo">
+            <a href="#" class="logo">
+              <!-- <img src="/assets/img/logo.mp4" alt=""> -->
+            </a>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="col-md-6">
+          <div class="header-search">
+            <form (submit)="onSeach(); $event.preventDefault()">
+              <select class="input-select" [(ngModel)]="selectedCategory" name="category">
+                <option [ngValue]="null">Tất cả</option>
+                <option *ngFor="let category of categories" [ngValue]="category._id">
+                  {{ category.name }}
+                </option>
+              </select>
+              <input class="input" name="keyword" placeholder="Search here" [(ngModel)]="keyword" />
+              <button type="submit" class="search-btn">Tìm Kiếm</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Cart & Wishlist -->
+        <div class="col-md-3 clearfix">
+          <div class="header-ctn">
+            <!-- Yêu thích -->
+            <div class="wishlist">
+              <a [routerLink]="['/favorite']" routerLinkActive="router-link-active">
+                <span>Sản phẩm yêu thích</span>
+                <div class="qty">{{ favoriteCount }}</div>
+              </a>
+            </div>
+
+            <!-- Giỏ hàng -->
+            <div class="dropdown">
+              <a [routerLink]="['/cart']" routerLinkActive="router-link-active">
+                <span>Giỏ Hàng của bạn</span>
+                <div class="qty">{{ cartQuantity }}</div>
+              </a>
+            </div>
+
+            <!-- Menu toggle -->
+            <div class="menu-toggle">
+              <a href="#">
+                <i class="fa fa-bars"></i>
+                <span>Menu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav id="navigation">
+  <div class="container">
+    <div id="responsive-nav">
+      <ul class="main-nav nav navbar-nav">
+        <li class="active"><a routerLink="/">Trang Chủ</a></li>
+        <li><a [routerLink]="['/product']" routerLinkActive="router-link-active">Sản phẩm</a></li>
+        <li><a [routerLink]="['/news']" routerLinkActive="router-link-active" >Tin tức</a></li>
+        <li><a [routerLink]="['/cart']" routerLinkActive="router-link-active">Giỏ Hàng</a></li>
+        <li *ngIf="!isLogin"><a [routerLink]="['/login']" routerLinkActive="router-link-active">Đăng Nhập</a></li>
+        <li><a href="#">Liên Hệ</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

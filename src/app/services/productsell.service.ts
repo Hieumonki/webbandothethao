@@ -9,7 +9,7 @@ import { ProductSell } from '../models/productsell';
   providedIn: 'root'
 })
 export class ProductServiceSell {
-  url = `http://127.0.0.1:8000/v1`;
+  url = `https://backend-funsport-6e9i.onrender.com/v1`;
 
   constructor(private httpClient: HttpClient) { }
 

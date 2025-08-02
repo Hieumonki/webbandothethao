@@ -1,0 +1,658 @@
+
+/* Modern Book Management Dashboard CSS */
+
+.delivered{
+    padding: 3px 8px ;
+     background-color: rgba(255, 238, 0, 0.7); /* Nền bán trong suốt */
+  backdrop-filter: blur(16px);
+    color: rgb(255, 255, 255);
+    border-radius: 50px;
+    border: 2px solid rgb(255, 241, 163);
+
+}
+.return {
+     padding: 3px 8px ;
+     background-color: rgba(85, 255, 0, 0.7); /* Nền bán trong suốt */
+  backdrop-filter: blur(16px);
+    color: rgb(255, 255, 255);
+    border-radius: 50px;
+    border: 2px solid rgb(77, 255, 83);
+}
+
+.inprogress {
+      padding: 3px 8px ;
+     background-color: #ff4949e5; /* Nền bán trong suốt */
+  backdrop-filter: blur(16px);
+    color: rgb(255, 255, 255);
+    border-radius: 50px;
+    border: 2px solid rgb(238, 161, 161);
+}
+
+/* Books Management Section */
+.tab-content {
+    max-width: 1400px;
+    margin: 0 auto;
+   padding: 30px 0px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.section-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+
+}
+.section-header{
+    padding: 50px 0px 0px 0px;
+}
+.add-new-btn {
+      background: #5850ec;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+         .card-chart i {
+    font-size: 4rem;
+}
+.card-chart.success  i{
+    color: #ffffff;
+}
+.card-chart.danger  i{
+    color: #ffffff;
+}
+.card-chart.yellow  i{
+    color: #ffffff;
+}
+
+.add-new-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Filter Section */
+.filter-section {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-filter {
+    display: flex;
+    flex: 1;
+    width: 300px;
+}
+
+.search-filter input {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    background: #ffffff;
+    border: 1px solid ;
+    border-right: none;
+    border-radius:3px;
+    color:rgb(0, 0, 0);
+    font-size: 1rem;
+    border: none;
+    backdrop-filter: blur(10px);
+}
+
+.search-filter input:focus {
+    outline: none;
+    border-color: white;
+     background: #5850ec;
+}
+
+.search-filter input::placeholder {
+    color:white;
+}
+
+.search-filter button {
+    padding: 0.875rem 1.25rem;
+     background: #5850ec;
+    border: none;
+    border-radius:2px;
+    color: white;
+    cursor: pointer;
+
+}
+.card-color-1 {
+    background: orange;
+}
+.card-color-2 {
+    background: rgb(25, 143, 253);
+}
+.card-color-3 {
+    background: rgb(0, 251, 33);
+}
+.card-color-4{
+    background: rgb(255, 37, 37);
+}
+.search-filter button:hover {
+    transform: translateY(-1px);
+    box-shadow: 1px ;
+}
+
+.category-filter select {
+    padding: 0.9rem 1rem;
+    background: white;
+    border: 1px solid black;
+    border-radius: 3px;
+
+    font-size: 1rem;
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+}
+
+.category-filter select:focus {
+    outline: none;
+    border-color: gray;
+
+}
+
+/* Data Table */
+.data-table {
+    background: #f7f7f9;
+    border-radius: 3px;
+    border: rgb(71, 71, 71);
+    overflow: hidden;
+    backdrop-filter:unset;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    background: rgba(102, 126, 234, 0.1);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.data-table tr {
+    transition:cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.data-table tbody tr:hover {
+    background: var(--bg-glass-hover);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.book-cover {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actions button {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:cubic-bezier(0.075, 0.82, 0.165, 1);
+    font-size: 0.9rem;
+}
+
+.view-btn {
+    color: white;
+}
+
+.view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:#f7f7f9;
+}
+
+.edit-btn {
+
+    color: white;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+
+}
+
+.delete-btn {
+
+    color: white;
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:#5850ec;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+
+    cursor: pointer;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+
+
+}
+
+.pagination-btn {
+    border: 1px solid rgb(88, 81, 81);
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    color: black;
+
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.pagination-btn:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.pagination-btn.active {
+    background: var(--primary-gradient);
+    border-color: var(--primary-color);
+    color: white;
+    background: #5850ec;
+
+}
+
+.pagination-dots {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    #sidebar-toggle:checked ~ .sidebar {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filter-section {
+        flex-direction: column;
+    }
+
+    .search-filter {
+        min-width: 100%;
+    }
+
+    .category-filter select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 1rem;
+    }
+
+    .tab-content {
+        padding: 0 1rem 1rem;
+    }
+
+    .data-table {
+        overflow-x: auto;
+    }
+
+    .data-table table {
+        min-width: 800px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .add-new-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.loading {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background-size: 200px 100%;
+}
+
+/* Focus Styles */
+button:focus,
+input:focus,
+select:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .menu-toggle,
+    .header-actions,
+    .actions {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px; /* Giảm chiều rộng để nhỏ gọn hơn */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* Giảm padding để nhỏ gọn */
+    background: #5850ec; /* Đồng bộ với add-new-btn */
+    color: white;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem; /* Giảm kích thước chữ */
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem; /* Giảm kích thước nút đóng */
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ff4949; /* Đồng bộ với inprogress */
+}
+
+.modal-body {
+    padding: 1rem; /* Giảm padding */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Giảm khoảng cách giữa các phần tử */
+}
+
+.modal-body label {
+    font-weight: 500;
+    color: #333; /* Thay thế var(--text-primary) */
+    font-size: 0.9rem; /* Giảm kích thước chữ */
+}
+
+.modal-body input,
+.modal-body textarea,
+.modal-body select {
+    padding: 0.75rem; /* Giảm padding */
+    border: 1px solid #e0e0e0; /* Thay thế var(--border-color) */
+    border-radius: 4px; /* Bo góc nhỏ hơn */
+    font-size: 0.9rem; /* Giảm kích thước chữ */
+    width: 100%;
+    box-sizing: border-box;
+    background: #f7f7f9; /* Đồng bộ với data-table */
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus,
+.modal-body select:focus {
+    border-color: #5850ec; /* Đồng bộ với add-new-btn */
+    background: #ffffff;
+    outline: none;
+}
+
+.modal-body textarea {
+    resize: vertical;
+    min-height: 80px; /* Giảm chiều cao textarea */
+}
+
+.modal-body input[placeholder="Nhập URL hình ảnh"] + img {
+    width: 50px; /* Giảm kích thước ảnh */
+    height: 75px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0; /* Đồng bộ với book-cover */
+    margin-top: 0.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem; /* Giảm khoảng cách */
+    padding: 0.75rem 1rem; /* Giảm padding */
+    border-top: 1px solid #e0e0e0; /* Thay thế var(--border-color) */
+}
+
+.action-btn {
+    padding: 0.75rem 1.25rem; /* Giảm kích thước nút */
+    border: none;
+    border-radius: 6px; /* Bo góc nhỏ hơn */
+    font-weight: 600;
+    font-size: 0.9rem; /* Giảm kích thước chữ */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-btn {
+    background: #5850ec; /* Đồng bộ với add-new-btn */
+    color: white;
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.cancel-btn {
+    background: #ff4949; /* Đồng bộ với inprogress */
+    color: white;
+}
+
+.cancel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design for Modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-width: 400px; /* Nhỏ hơn trên tablet */
+    }
+
+    .modal-header {
+        padding: 0.75rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .modal-body {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .modal-body label {
+        font-size: 0.85rem;
+    }
+
+    .modal-body input,
+    .modal-body textarea,
+    .modal-body select {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .modal-footer {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .action-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        max-width: 320px; /* Nhỏ hơn trên mobile */
+    }
+
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+
+    .modal-body input,
+    .modal-body textarea,
+    .modal-body select {
+        font-size: 0.8rem;
+    }
+
+    .modal-body input[placeholder="Nhập URL hình ảnh"] + img {
+        width: 40px;
+        height: 60px; /* Đồng bộ với book-cover */
+    }
+
+    .modal-body textarea {
+        min-height: 60px;
+    }
+}

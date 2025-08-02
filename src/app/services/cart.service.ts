@@ -8,53 +8,53 @@ import { Product } from '../models/product';
 })
 export class CartService {
   private cart: CartItem[] = [];
-  private cartCount = new BehaviorSubject<number>(0); // ✅ NEW
-  cartCount$ = this.cartCount.asObservable();         // ✅ NEW
+  private cartCount = new BehaviorSubject<number>(0);
+  cartCount$ = this.cartCount.asObservable();
 
   constructor() {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       this.cart = JSON.parse(savedCart);
     }
-    this.updateCartCount(); // ✅ NEW
+    this.updateCartCount();
   }
 
   private saveCart(): void {
     localStorage.setItem('cart', JSON.stringify(this.cart));
-    this.updateCartCount(); // ✅ NEW
+    this.updateCartCount();
   }
 
   private updateCartCount(): void {
-    const totalQuantity = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-    this.cartCount.next(totalQuantity); // ✅ NEW
+    const totalQuantity = this.cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+    this.cartCount.next(totalQuantity);
   }
 
   getItems(): CartItem[] {
     return this.cart;
   }
 
-addToCart(item: any): void {
-  const existingIndex = this.cart.findIndex(i =>
-    i.product._id === item._id &&
-    i.selectedSize === item.selectedSize &&
-    i.selectedColor === item.selectedColor
-  );
+  addToCart(item: any): void {
+    const existingIndex = this.cart.findIndex(i =>
+      i.product._id === item._id &&
+      i.selectedSize === item.selectedSize &&
+      i.selectedColor === item.selectedColor
+    );
 
-  if (existingIndex > -1) {
-    this.cart[existingIndex].quantity += item.quantity;
-  } else {
-    this.cart.push({
-      product: item,
-      quantity: item.quantity,
-      selectedSize: item.selectedSize,
-      selectedColor: item.selectedColor
-    });
+    const quantity = Number(item.quantity) || 1;
+
+    if (existingIndex > -1) {
+      this.cart[existingIndex].quantity += quantity;
+    } else {
+      this.cart.push({
+        product: item,
+        quantity,
+        selectedSize: item.selectedSize,
+        selectedColor: item.selectedColor
+      });
+    }
+
+    this.saveCart();
   }
-
-  this.saveCart();
-}
-
-
 
   removeOne(productId: string): void {
     const index = this.cart.findIndex(item => item.product._id === productId);

@@ -1,27 +1,156 @@
-<div class="account-container">
-  <div class="account-sidebar">
-    <div class="user-avatar">
-      <img src="https://i.pravatar.cc/100" alt="User Avatar">
-      <h4>hieumonki4</h4>
-    </div>
-    <ul class="account-menu">
-      <li [routerLink]="['/admin']" routerLinkActive="router-link-active"  class="active">Trang tài khoản</li>
-      <li>Đơn hàng</li>
-      <li [routerLink]="['/admin/category-list']" routerLinkActive="router-link-active" >Sản Phẩm</li>
-      <li>Danh Mục</li>
-      <li>Tài khoản</li>
-      <li>Đăng xuất</li>
-      <li>Wishlist</li>
-    </ul>
+<app-nav></app-nav>
+<div class="container">
+<div class="page-header">
+  <div>
+    <h1>Phân Tích Dụng Cụ Thể Thao</h1>
+    <small>Theo dõi các chỉ số chính: doanh thu, tồn kho, và đơn hàng.</small>
   </div>
-<router-outlet/>
-  <div class="account-content">
-    <p>Xin chào <strong>hieumonki4</strong> (không phải tài khoản <strong>hieumonki4</strong>? <a href="#">Hãy thoát ra</a>)</p>
-    <p>
-      Từ trang quản lý tài khoản bạn có thể xem <strong>đơn hàng mới</strong>,
-      quản lý <strong>địa chỉ giao hàng</strong> và <strong>thanh toán</strong>,
-      và <strong>sửa mật khẩu và thông tin tài khoản</strong>.
-    </p>
+  <div class="header-actions">
+    <button (click)="exportData()">
+      <span class="las la-file-export"></span>
+      Xuất Dữ Liệu
+    </button>
+    <button (click)="openSettings()">
+      <span class="las la-tools"></span>
+      Cài Đặt
+    </button>
+  </div>
+</div>
 
+<div class="cards">
+  <div class="card-single card-color-1">
+    <div class="card-flex">
+      <div class="card-info">
+        <div class="card-head">
+          <span>Tổng Doanh Thu</span>
+          <small>Doanh thu tháng này</small>
+        </div>
+        <h2>{{ totalRevenue | currency:'VND':'symbol':'1.0-0' }}</h2>
+        <small>{{ revenueGrowth >= 0 ? '+' : '' }}{{ revenueGrowth }}% so với tháng trước</small>
+      </div>
+      <div class="card-chart success">
+        <i class="fa-solid fa-chart-simple"></i>
+      </div>
+    </div>
   </div>
+  <div class="card-single card-color-2">
+    <div class="card-flex">
+      <div class="card-info">
+        <div class="card-head">
+          <span>Tồn Kho</span>
+          <small>Số lượng dụng cụ thể thao còn lại</small>
+        </div>
+        <h2>{{ totalInventory }}</h2>
+        <small>Thấp hơn 10% ngưỡng đặt hàng lại</small>
+      </div>
+      <div class="card-chart danger">
+        <i class="fa-solid fa-warehouse"></i>
+      </div>
+    </div>
+  </div>
+  <div class="card-single card-color-3">
+    <div class="card-flex">
+      <div class="card-info">
+        <div class="card-head">
+          <span>Đơn Hàng</span>
+          <small>Đơn hàng đặt trong tháng</small>
+        </div>
+        <h2>{{ totalOrders }}</h2>
+        <small>{{ orderGrowth >= 0 ? '+' : '' }}{{ orderGrowth }}% so với tháng trước</small>
+      </div>
+      <div class="card-chart yellow">
+        <i class="fa-solid fa-box"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jobs-gird">
+  <div class="analytics-card">
+    <div class="analytics-head">
+      <h3>Phân Tích Doanh Thu</h3>
+      <span class="la la-ellipsis-h"></span>
+    </div>
+    <div class="analytics-chart">
+      <img src="assets/images/sales-trend.png" alt="Biểu Đồ Doanh Thu">
+    </div>
+    <div class="analytics-chart">
+      <div class="chart-circle">
+        <h1>{{ percentageSold }}%</h1>
+      </div>
+      <div class="analytics-note">
+        <small><strong>Ghi chú:</strong> Nhu cầu cao đối với dụng cụ tập gym quý này.</small>
+      </div>
+    </div>
+    <div class="analytics-btn">
+      <button (click)="generateReport()">Tạo Báo Cáo</button>
+    </div>
+  </div>
+  <div class="jobs">
+    <h2>Đơn Hàng Gần Đây <small><a routerLink="/orders">Xem tất cả đơn hàng <span
+            class="las la-arrow-right"></span></a></small></h2>
+    <div class="table-responsive">
+      <table width="100%">
+        <tbody class="jobs-table">
+          <tr *ngIf="!isLoading && !errorMessage && recentOrders.length === 0">
+            <td colspan="6">Không có đơn hàng gần đây.</td>
+          </tr>
+          <tr *ngFor="let order of recentOrders; trackBy: trackByOrderId">
+            <td>
+              <div>
+                <span class="indicator"></span>
+              </div>
+            </td>
+            <td>
+              <div>{{ order.orderId }}</div>
+            </td>
+            <td>
+              <div>{{ order.productId?.name || 'N/A' }}</div>
+            </td>
+            <td>
+              <div>{{ order.userId?.name || 'N/A' }}, Việt Nam</div>
+            </td>
+            <td>
+              <div>{{ order.createdAt | date:'shortDate' }}</div>
+            </td>
+            <td>
+              <div>
+                <button class="apply-btn" (click)="viewOrderDetails(order)">Xem</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="isLoading">Đang tải đơn hàng...</div>
+      <div *ngIf="errorMessage && !isLoading" class="error">{{ errorMessage }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="analytics-diagram">
+  <div class="engage-head">
+    <div class="card-diagram card-body">
+      DOANH THU THEO DANH MỤC
+    </div>
+    <div class="card-diagram card-body">
+      <div *ngIf="!isChartDataLoaded || isLoading">Đang tải dữ liệu biểu đồ...</div>
+      <div *ngIf="isChartDataLoaded && !isLoading && errorMessage" class="error">{{ errorMessage }}</div>
+     <apx-chart
+  *ngIf="isChartDataLoaded && !isLoading && !errorMessage"
+  [series]="chartOptions.series"
+  [chart]="chartOptions.chart"
+  [labels]="chartOptions.labels"
+  [title]="chartOptions.title"
+  [colors]="chartOptions.colors"
+  [tooltip]="chartOptions.tooltip"
+  [legend]="legendOptions">
+</apx-chart>
+
+
+
+    </div>
+  </div>
+</div>
+
+<label for="sidebar-toggle" class="body-label"></label>
 </div>

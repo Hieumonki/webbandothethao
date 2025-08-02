@@ -1,0 +1,10 @@
+<div class="container">
+  <h1 class="title">Tin tức mới nhất</h1>
+  <div class="news-grid">
+    <div class="news-card" *ngFor="let item of newsList">
+      <img [src]="item.image" alt="Ảnh tin tức" />
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+    </div>
+  </div>
+</div>

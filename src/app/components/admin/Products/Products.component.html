@@ -1,0 +1,262 @@
+
+      <div class="page-header">
+        <div>
+          <h1>Quản lý sản phẩm</h1>
+          <small>Theo dõi các số liệu chính. Kiểm tra báo cáo và thông tin chi tiết.</small>
+        </div>
+        <div class="header-actions">
+          <button (click)="exportProducts()">
+            <span class="las la-file-export"></span> Export
+          </button>
+          <button (click)="openSettings()">
+            <span class="las la-tools"></span> Settings
+          </button>
+        </div>
+      </div>
+
+      <div class="user-cards">
+        <div class="card-single card-color-1">
+          <div class="card-flex">
+            <div class="card-info">
+              <div class="card-head">
+                <span>Tổng sản phẩm</span>
+                <small>Tổng sản phẩm trong kho</small>
+              </div>
+              <h2>{{ productStats.totalProducts }}</h2>
+              <small>Tất cả sản phẩm trong kho</small>
+            </div>
+            <div class="card-chart success">
+              <i class="fa-solid fa-box"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-single card-color-2">
+          <div class="card-flex">
+            <div class="card-info">
+              <div class="card-head">
+                <span>Còn hàng</span>
+                <small>Tổng sản phẩm còn hàng trong kho</small>
+              </div>
+              <h2>{{ productStats.inStockProducts }}</h2>
+              <small>Sản phẩm còn hàng</small>
+            </div>
+            <div class="card-chart danger">
+              <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-single card-color-3">
+          <div class="card-flex">
+            <div class="card-info">
+              <div class="card-head">
+                <span>Sản phẩm sắp hết</span>
+                <small>Tổng sản phẩm sắp hết trong kho</small>
+              </div>
+              <h2>{{ productStats.lowStockProducts }}</h2>
+              <small>Sắp hết hàng</small>
+            </div>
+            <div class="card-chart danger">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-single card-color-4">
+          <div class="card-flex">
+            <div class="card-info">
+              <div class="card-head">
+                <span>Hết hàng</span>
+                <small>Sản phẩm đã hết hàng trong kho</small>
+              </div>
+              <h2>{{ productStats.outOfStockProducts }}</h2>
+              <small>Sản phẩm hết hàng</small>
+            </div>
+            <div class="card-chart yellow">
+              <i class="fa-solid fa-square-xmark"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="products">
+        <div class="section-header">
+          <button class="add-new-btn" (click)="openAddModal()"><i class="fas fa-plus"></i> Thêm sản phẩm mới</button>
+          <button class="delete-selected-btn" [disabled]="!hasSelectedProducts" (click)="deleteSelectedProducts()">
+            <i class="fas fa-trash"></i> Xóa đã chọn
+          </button>
+          <button class="export-btn" (click)="exportProducts()"><i class="fas fa-download"></i> Xuất CSV</button>
+        </div>
+
+        <div class="filter-section">
+          <div class="search-filter">
+            <input type="text" placeholder="Tìm kiếm sản phẩm..." [(ngModel)]="searchQuery" (input)="applyFilters()">
+            <button><i class="fas fa-search"></i></button>
+          </div>
+          <div class="category-filter">
+            <select [(ngModel)]="categoryFilter" (change)="applyFilters()">
+              <option value="all">Tất cả thể loại</option>
+              <option value="badminton">Cầu lông</option>
+              <option value="football">Bóng đá</option>
+              <option value="volleyball">Bóng chuyền</option>
+              <option value="billiards">Bida</option>
+              <option value="electronics">Điện tử</option>
+              <option value="sports">Thể thao</option>
+              <option value="clothing">Quần áo</option>
+              <option value="food">Thực phẩm</option>
+              <option value="books">Sách</option>
+            </select>
+          </div>
+          <div class="status-filter">
+            <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="instock">Còn hàng</option>
+              <option value="lowstock">Sắp hết</option>
+              <option value="outofstock">Hết hàng</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select-all-products" [(ngModel)]="selectAll" (change)="toggleSelectAll()"></th>
+                <th>ID</th>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="isLoadingProducts">
+                <td colspan="9" class="loading">Đang tải sản phẩm...</td>
+              </tr>
+              <tr *ngIf="!isLoadingProducts && errorProducts">
+                <td colspan="9" class="error">{{ errorProducts }}</td>
+              </tr>
+              <tr *ngIf="!isLoadingProducts && !errorProducts && filteredProducts.length === 0">
+                <td colspan="9">Không có sản phẩm nào để hiển thị.</td>
+              </tr>
+              <tr *ngFor="let product of filteredProducts; trackBy: trackByProductId">
+                <td><input type="checkbox" class="select-item" [(ngModel)]="product.selected" (change)="updateSelectedProducts()"></td>
+                <td>{{ product._id }}</td>
+                <td><img [src]="product.images[0] || 'https://via.placeholder.com/40/60'" alt="Product image" class="product-image"></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price | currency:'VND':'symbol' }}</td>
+                <td><span class="status {{ product.status }}">{{ translateProductStatus(product.status) }}</span></td>
+                <td class="actions">
+                  <button class="view-btn" (click)="viewProductDetails(product)"><i class="fas fa-eye"></i></button>
+                  <button class="edit-btn" (click)="openEditModal(product)"><i class="fas fa-edit"></i></button>
+                  <button class="delete-btn" (click)="deleteProduct(product)"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button class="pagination-btn prev" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)"><i class="fas fa-chevron-left"></i></button>
+          <button class="pagination-btn page" [ngClass]="{ 'active': currentPage === i }" *ngFor="let i of pageNumbers" (click)="changePage(i)">{{ i }}</button>
+          <button class="pagination-btn next" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Add Product Modal -->
+  <!-- Add Product Modal -->
+<div class="modal-overlay" [ngClass]="{ 'active': isAddModalOpen }">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Thêm Sản Phẩm Mới</h3>
+            <button class="close-btn" (click)="closeAddModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <label>Tên sản phẩm:</label>
+            <input type="text" [(ngModel)]="newProduct.name" placeholder="Nhập tên sản phẩm">
+            <label>Số lượng:</label>
+            <input type="number" [(ngModel)]="newProduct.quantity" min="0">
+            <label>Danh mục:</label>
+            <select [(ngModel)]="newProduct.category">
+                <option value="badminton">Cầu lông</option>
+                <option value="football">Bóng đá</option>
+                <option value="volleyball">Bóng chuyền</option>
+                <option value="billiards">Bida</option>
+                <option value="electronics">Điện tử</option>
+                <option value="sports">Thể thao</option>
+                <option value="clothing">Quần áo</option>
+                <option value="food">Thực phẩm</option>
+                <option value="books">Sách</option>
+            </select>
+            <label>Giá:</label>
+            <input type="number" [(ngModel)]="newProduct.price" min="0">
+            <label>Mô tả:</label>
+            <textarea [(ngModel)]="newProduct.desc" placeholder="Nhập mô tả"></textarea>
+            <label>Hình ảnh (URL):</label>
+            <input type="text" [(ngModel)]="newProduct.images[0]" placeholder="Nhập URL hình ảnh">
+            <img [src]="newProduct.images[0] || 'https://via.placeholder.com/40/60'" alt="Preview" class="product-image" *ngIf="newProduct.images[0]">
+            <label>Màu sắc:</label>
+            <input type="text" [(ngModel)]="newProduct.color" placeholder="Nhập màu sắc">
+            <label>Tab:</label>
+            <input type="text" [(ngModel)]="newProduct.tab" placeholder="Nhập tab">
+            <label>Mô tả chi tiết:</label>
+            <textarea [(ngModel)]="newProduct.describe" placeholder="Nhập mô tả chi tiết"></textarea>
+            <label>Số lượng tối thiểu:</label>
+            <input type="number" [(ngModel)]="newProduct.minStock" min="0">
+        </div>
+        <div class="modal-footer">
+            <button class="action-btn add-btn" (click)="addProduct()">Thêm</button>
+            <button class="action-btn cancel-btn" (click)="closeAddModal()">Hủy</button>
+        </div>
+    </div>
+</div>
+
+      <!-- Edit Product Modal -->
+      <div class="modal-overlay" [ngClass]="{ 'active': isEditModalOpen }">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Chỉnh Sửa Sản Phẩm</h3>
+            <button class="close-btn" (click)="closeEditModal()">×</button>
+          </div>
+          <div class="modal-body" *ngIf="editProduct">
+            <label>Tên sản phẩm:</label>
+            <input type="text" [(ngModel)]="editProduct.name" placeholder="Nhập tên sản phẩm">
+            <label>Số lượng:</label>
+            <input type="number" [(ngModel)]="editProduct.quantity" min="0">
+            <label>Danh mục:</label>
+            <select [(ngModel)]="editProduct.category">
+              <option value="badminton">Cầu lông</option>
+              <option value="football">Bóng đá</option>
+              <option value="volleyball">Bóng chuyền</option>
+              <option value="billiards">Bida</option>
+              <option value="electronics">Điện tử</option>
+              <option value="sports">Thể thao</option>
+              <option value="clothing">Quần áo</option>
+              <option value="food">Thực phẩm</option>
+              <option value="books">Sách</option>
+            </select>
+            <label>Giá:</label>
+            <input type="number" [(ngModel)]="editProduct.price" min="0">
+            <label>Mô tả:</label>
+            <textarea [(ngModel)]="editProduct.desc" placeholder="Nhập mô tả"></textarea>
+            <label>Hình ảnh (URL):</label>
+            <input type="text" [(ngModel)]="editProduct.images[0]" placeholder="Nhập URL hình ảnh">
+            <img [src]="editProduct.images[0] || 'https://via.placeholder.com/40/60'" alt="Preview" class="product-image" *ngIf="editProduct.images[0]">
+            <label>Màu sắc:</label>
+            <input type="text" [(ngModel)]="editProduct.color" placeholder="Nhập màu sắc">
+            <label>Tab:</label>
+            <input type="text" [(ngModel)]="editProduct.tab" placeholder="Nhập tab">
+            <label>Mô tả chi tiết:</label>
+            <textarea [(ngModel)]="editProduct.describe" placeholder="Nhập mô tả chi tiết"></textarea>
+            <label>Số lượng tối thiểu:</label>
+            <input type="number" [(ngModel)]="editProduct.minStock" min="0">
+          </div>
+          <div class="modal-footer">
+            <button class="action-btn add-btn" (click)="updateProduct()">Cập nhật</button>
+            <button class="action-btn cancel-btn" (click)="closeEditModal()">Hủy</button>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,220 @@
+<div class="page-header">
+    <div>
+        <h1>Quản lý kho hàng</h1>
+        <small>Theo dõi các số liệu chính. Kiểm tra báo cáo và rate_review thông tin chi tiết.</small>
+    </div>
+    <div class="header-actions">
+        <button>
+            <span class="las la-file-export"></span>
+            Export
+        </button>
+        <button>
+            <span class="las la-tools"></span>
+            settings
+        </button>
+    </div>
+</div>
+
+<div class="user-cards">
+    <div class="card-single card-color-1">
+        <div class="card-flex">
+            <div class="card-info">
+                <div class="card-head">
+                    <span>Tổng sản phẩm</span>
+                    <small>Tổng sản phẩm trong kho</small>
+                </div>
+                <h2>{{ totalProducts }}</h2>
+                <small>Tất cả sản phẩm trong kho</small>
+            </div>
+            <div class="card-chart success">
+                <i class="fa-solid fa-box"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-single card-color-2">
+        <div class="card-flex">
+            <div class="card-info">
+                <div class="card-head">
+                    <span>Giá trị</span>
+                    <small>Tổng giá trị tồn kho</small>
+                </div>
+                <h2>{{ totalValue | currency:'VND' }}</h2>
+                <small>Giá trị tồn kho</small>
+            </div>
+            <div class="card-chart danger">
+                <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-single card-color-3">
+        <div class="card-flex">
+            <div class="card-info">
+                <div class="card-head">
+                    <span>Đơn hàng hôm nay</span>
+                    <small>Tổng đơn hàng xuất kho hôm này</small>
+                </div>
+                <h2>{{ ordersToday }}</h2>
+                <small>xuất kho</small>
+            </div>
+            <div class="card-chart danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-single card-color-4">
+        <div class="card-flex">
+            <div class="card-info">
+                <div class="card-head">
+                    <span>Hết hàng</span>
+                    <small>Sản phẩm đã hết hàng trong kho</small>
+                </div>
+                <h2>{{ outOfStock }}</h2>
+                <small>Sản phẩm hết hàng</small>
+            </div>
+            <div class="card-chart yellow">
+                <i class="fa-solid fa-square-xmark"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content-table">
+    <div class="section">
+        <h2><i class="fa-solid fa-plus"></i> Thêm sản phẩm mới</h2>
+        <form (ngSubmit)="addProduct()">
+            <div class="form-group">
+                <label for="productName">Tên sản phẩm</label>
+                <input type="text" id="productName" placeholder="Nhập tên sản phẩm" [(ngModel)]="newProduct.productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Danh mục</label>
+                <select id="productCategory" [(ngModel)]="newProduct.category" name="category" required>
+                    <option value="">Chọn danh mục</option>
+                    <option value="electronics">Điện tử</option>
+                    <option value="clothing">Thời trang</option>
+                    <option value="food">Thực phẩm</option>
+                    <option value="books">Sách</option>
+                    <option value="sports">Thể thao</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productQuantity">Số lượng</label>
+                <input type="number" id="productQuantity" placeholder="Nhập số lượng" [(ngModel)]="newProduct.quantity" name="quantity" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Giá (₫)</label>
+                <input type="number" id="productPrice" placeholder="Nhập giá" [(ngModel)]="newProduct.price" name="price" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="minStock">Số lượng tối thiểu</label>
+                <input type="number" id="minStock" placeholder="Số lượng cảnh báo" [(ngModel)]="newProduct.minStock" name="minStock" min="0" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Thêm sản phẩm</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2><i class="fa-solid fa-rotate-right"></i> Cập nhật tồn kho</h2>
+        <form (ngSubmit)="updateInventory()">
+            <div class="form-group">
+                <label for="updateProduct">Chọn sản phẩm</label>
+                <select id="updateProduct" [(ngModel)]="updateProductId" name="updateProductId" required>
+                    <option value="">Chọn sản phẩm cần cập nhật</option>
+                    <option *ngFor="let product of products; trackBy: trackByProductId" [value]="product._id">{{ product.productName }} ({{ product.quantity }})</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="updateType">Loại cập nhật</label>
+                <select id="updateType" [(ngModel)]="updateType" name="updateType" required>
+                    <option value="add">Nhập kho (+)</option>
+                    <option value="remove">Xuất kho (-)</option>
+                    <option value="set">Đặt số lượng</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="updateQuantity">Số lượng</label>
+                <input type="number" id="updateQuantity" placeholder="Nhập số lượng" [(ngModel)]="updateQuantity" name="updateQuantity" min="0" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-full">Cập nhật</button>
+        </form>
+    </div>
+</div>
+
+<div class="details">
+    <div class="recentOrders">
+        <div class="cardHeader">
+            <h2>Recent Orders</h2>
+            <a href="#" id="More" class="btn" (click)="openModal($event)">View All</a>
+        </div>
+        <div class="table-container">
+            <table class="table-warehouse">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Price</td>
+                        <td>Payment</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of recentOrders; trackBy: trackByOrderId">
+                        <td>{{ order.orderId }}</td>
+                        <td>{{ order.productName }}</td>
+                        <td>{{ order.price | currency:'VND' }}</td>
+                        <td>{{ order.payment }}</td>
+                        <td>
+                            <span class="status" [ngClass]="order.status">
+                                {{ order.status === 'inprogress' ? 'Hết hàng' : order.status === 'delivered' ? 'Sắp hết hàng' : 'Còn hàng' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button (click)="deleteOrder(order._id)"><i class="fa-solid fa-trash"></i></button>
+                            <button (click)="editOrder(order)"><i class="fa-solid fa-pen"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for View All Orders -->
+<div id="ordersModal" class="modal-overlay" [ngClass]="{ 'active': isOrdersModalOpen }" *ngIf="isOrdersModalOpen" role="dialog" aria-labelledby="modal-header">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-header">All Orders Management</h3>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        <table class="modal-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of filteredOrders; trackBy: trackByOrderId">
+                    <td>{{ order.orderId }}</td>
+                    <td>{{ order.productName }}</td>
+                    <td>{{ order.price | currency:'VND' }}</td>
+                    <td>{{ order.payment }}</td>
+                    <td>
+                        <span class="status" [ngClass]="order.status">
+                            {{ order.status === 'inprogress' ? 'Hết hàng' : order.status === 'delivered' ? 'Sắp hết hàng' : 'Còn hàng' }}
+                        </span>
+                    </td>
+                    <td>
+                        <button (click)="deleteOrder(order._id)"><i class="fa-solid fa-trash"></i></button>
+                        <button (click)="editOrder(order)"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

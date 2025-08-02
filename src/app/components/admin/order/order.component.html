@@ -1,0 +1,199 @@
+
+    <div class="page-header">
+      <div>
+        <h1>Quản Lý Đơn Hàng</h1>
+        <small>Theo dõi các số liệu chính. Kiểm tra báo cáo và xem thông tin chi tiết.</small>
+      </div>
+      <div class="header-actions">
+        <button (click)="exportData()">
+          <span class="las la-file-export"></span>
+          Export
+        </button>
+        <button (click)="addNewOrder()">
+          <span class="las la-plus"></span>
+          Thêm Đơn Hàng
+        </button>
+      </div>
+    </div>
+
+    <div class="user-cards">
+      <div class="card-single card-color-1">
+        <div class="card-flex">
+          <div class="card-info">
+            <div class="card-head">
+              <span>Tổng Đơn Hàng</span>
+              <small>Tổng số đơn hàng trong hệ thống</small>
+            </div>
+            <h2>{{ totalOrders }}</h2>
+            <small>Tất cả đơn hàng</small>
+          </div>
+          <div class="card-chart success">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+        </div>
+      </div>
+      <div class="card-single card-color-2">
+        <div class="card-flex">
+          <div class="card-info">
+            <div class="card-head">
+              <span>Đang Xử Lý</span>
+              <small>Đơn hàng đang xác nhận</small>
+            </div>
+            <h2>{{ inProgressOrders }}</h2>
+            <small>Cần xử lý</small>
+          </div>
+          <div class="card-chart red">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+        </div>
+      </div>
+      <div class="card-single card-color-3">
+        <div class="card-flex">
+          <div class="card-info">
+            <div class="card-head">
+              <span>Đã Giao</span>
+              <small>Đơn hàng đã vận chuyển</small>
+            </div>
+            <h2>{{ deliveredOrders }}</h2>
+            <small>Đã giao hàng</small>
+          </div>
+          <div class="card-chart danger">
+            <i class="fa-solid fa-truck-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="card-single card-color-4">
+        <div class="card-flex">
+          <div class="card-info">
+            <div class="card-head">
+              <span>Trả Hàng</span>
+              <small>Đơn hàng bị trả lại</small>
+            </div>
+            <h2>{{ returnOrders }}</h2>
+            <small>Đã trả hàng</small>
+          </div>
+          <div class="card-chart yellow">
+            <i class="fa-solid fa-check-to-slot"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters-header">
+      <div class="filters-container">
+        <div class="filters-row">
+          <div class="filter-group">
+            <label>Tìm Kiếm</label>
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Nhập mã đơn hàng hoặc tên khách hàng...">
+          </div>
+          <div class="filter-group">
+            <label>Trạng Thái</label>
+            <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+              <option value="">Tất cả trạng thái</option>
+              <option value="inprogress">Đang Xử Lý</option>
+              <option value="delivered">Đã Giao</option>
+              <option value="return">Trả Hàng</option>
+              <option value="locked">Bị Khóa</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Từ Ngày</label>
+            <input type="date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()">
+          </div>
+          <div class="filter-group">
+            <label>Đến Ngày</label>
+            <input type="date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()">
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-primary" (click)="applyFilters()">
+              <i class="fas fa-search"></i> Tìm Kiếm
+            </button>
+            <button class="btn btn-secondary" (click)="resetFilters()">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details">
+      <div class="recentOrders">
+        <div class="cardHeader">
+          <h2>Recent Orders</h2>
+          <a routerLink="/orders" class="btn">View All</a>
+        </div>
+        <div class="table-container">
+          <table class="table-warehouse">
+            <thead>
+              <tr>
+                <td><input type="checkbox" [(ngModel)]="isSelectAll" (change)="toggleSelectAll()"></td>
+                <td>ID</td>
+                <td>Sản Phẩm</td>
+                <td>Khách Hàng</td>
+                <td>Giá</td>
+                <td>Thanh Toán</td>
+                <td>Ngày</td>
+                <td>Trạng Thái</td>
+                <td>Hành Động</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!isLoading && !errorMessage && filteredOrders.length === 0">
+                <td colspan="9">Không có đơn hàng nào để hiển thị.</td>
+              </tr>
+              <tr *ngFor="let order of filteredOrders; trackBy: trackByOrderId">
+                <td><input type="checkbox" [(ngModel)]="order.selected" (change)="updateSelectAll()"></td>
+                <td>{{ order.orderId }}</td>
+                <td>{{ order.productId.name || 'N/A' }}</td>
+                <td>{{ order.userId.name || 'N/A' }}</td>
+                <td>{{ order.productId.price | currency:'VND' }}</td>
+                <td>{{ order.payment }}</td>
+                <td>{{ order.createdAt | date:'dd/MM/yyyy' }}</td>
+                <td><span class="status {{ order.status }}">{{ translateOrderStatus(order.status) }}</span></td>
+                <td>
+                  <button (click)="viewOrderDetails(order)"><i class="fa-solid fa-eye"></i></button>
+                  <button (click)="deleteOrder(order.orderId)"><i class="fa-solid fa-trash"></i></button>
+                  <button (click)="toggleLockOrder(order)"><i class="fa-solid fa-lock"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="isLoading">Đang tải đơn hàng...</div>
+          <div *ngIf="errorMessage && !isLoading" class="error">{{ errorMessage }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" [class.active]="isViewModalOpen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Chi Tiết Đơn Hàng</h3>
+          <button class="close-btn" (click)="closeViewModal()">×</button>
+        </div>
+        <div *ngIf="selectedOrder">
+          <p><strong>ID:</strong> {{ selectedOrder.orderId }}</p>
+          <p><strong>Sản Phẩm:</strong> {{ selectedOrder.productId.name || 'N/A' }}</p>
+          <p><strong>Giá:</strong> {{ selectedOrder.productId.price | currency:'VND' }}</p>
+          <p><strong>Khách Hàng:</strong> {{ selectedOrder.userId.name || 'Không có' }}</p>
+          <p><strong>Số Tiền:</strong> {{ selectedOrder.totalAmount | currency:'VND' }}</p>
+          <p><strong>Thanh Toán:</strong> {{ selectedOrder.payment }}</p>
+          <p><strong>Ngày Tạo:</strong> {{ selectedOrder.createdAt | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Loại:</strong> {{ selectedOrder.category }}</p>
+          <p><strong>Trạng Thái:</strong> {{ translateOrderStatus(selectedOrder.status) }}</p>
+          <div class="filter-group">
+            <label>Cập Nhật Trạng Thái:</label>
+            <select [(ngModel)]="selectedOrder.status" (ngModelChange)="updateOrderStatus()">
+              <option value="delivered">Đã Giao</option>
+              <option value="inprogress">Đang Xử Lý</option>
+              <option value="return">Trả Hàng</option>
+              <option value="locked">Bị Khóa</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-primary" (click)="updateOrderStatus()">Cập Nhật</button>
+            <button class="btn btn-secondary" (click)="closeViewModal()">Đóng</button>
+          </div>
+        </div>
+        <div *ngIf="!selectedOrder">Không có đơn hàng được chọn.</div>
+      </div>
+    </div>

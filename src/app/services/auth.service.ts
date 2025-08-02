@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  url = `http://127.0.0.1:8000/v1`;
+  url = `https://backend-funsport-6e9i.onrender.com/v1`;
 
   constructor(private httpClient: HttpClient) { }
   checkAdmin() {
